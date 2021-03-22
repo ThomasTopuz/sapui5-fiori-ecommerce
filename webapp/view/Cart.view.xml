@@ -1,0 +1,43 @@
+<mvc:View controllerName="opensap.ecommerce.controller.Cart" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+	xmlns:smartform="sap.ui.comp.smartform">
+	<Page title="{i18n>cartPageTitle}"
+		class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer"
+		showNavButton="true" navButtonPress="onNavBack">
+		<HBox justifyContent="End">
+			<VBox>
+				<Button text="{i18n>toCheckoutText}" width="100%" type="Accept" class="sapUiResponsivePadding" press="onCompletePurchase"></Button>
+				<Title text="Total: {cart>/iTotalPrice} {cart>/items/0/CurrencyCode}"/>
+			</VBox>
+		</HBox>
+		<Table id="idProductsTable" inset="false" items="{ path: 'cart>/items', sorter: { path: 'Name' } }">
+			<columns>
+				<Column width="20%">
+					<Text text="Product"/>
+				</Column>
+				<Column  width="20%" >
+					<Text text="Supplier"/>
+				</Column>
+				<Column  width="20%">
+					<Text text="Price"/>
+				</Column>
+				<Column  width="20%">
+					<Text text="Category"/>
+				</Column>
+				<Column  width="20%">
+					<Text text="Quantity"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<ObjectIdentifier title="{cart>product/Name}" text="{cart>product/ProductID}"/>
+						<Text text="{cart>product/SupplierName}"/>
+						<Text text="{cart>product/Price} {cart>product/CurrencyCode}"/>
+						<Text text="{cart>product/Category}"/>
+						<Input value = "{cart>quantity}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Page>
+</mvc:View>

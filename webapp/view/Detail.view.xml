@@ -1,0 +1,36 @@
+<mvc:View controllerName="opensap.ecommerce.controller.Detail" xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc">
+	<VBox>
+		<Panel class="sapUiNoContentPadding">
+		<HBox class="sapUiSmallMargin" justifyContent="End">
+			<StepInput class="sapUiTinyMarginEnd" value="{detailView>/Quantity}" displayValuePrecision="{displayValuePrecision}" min="0" max="100" step="1" width="120px"
+				stepMode="{stepMode}" valueState="{valueState}" enabled="{enabled}" editable="{editable}" description="{description}"
+				textAlign="{textAlign}" change="onChange"/>
+				
+			<Button class="sapUiResponsiveContentPadding" text="{i18n>addToCartText}" icon="sap-icon://cart" press=".onAddToCart"/>
+		</HBox>
+		</Panel>
+	
+	<ObjectHeader backgroundDesign="Solid" icon="sap-icon://iphone" iconDensityAware="false" iconAlt="{Name}" intro="{Category}" title="{Name}"
+		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+		numberUnit="{CurrencyCode}" class="sapUiResponsivePadding--header">
+		<ObjectAttribute
+			text="{Description} Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+	</ObjectHeader>
+	
+	<Panel expandable="true" headerText="{i18n>measuresText}" width="auto" class="sapUiResponsiveMargin">
+		<content>
+				<form:SimpleForm id="objectForm">
+					<form:content>
+						<Label text="{i18n>productDepthLabel}"/>
+						<Text text="{= ${Depth} + ' ' + ${MeasureUnit}}"/>
+						<Label text="{i18n>productWidthLabel}"/>
+						<Text text="{= ${Width} + ' ' + ${MeasureUnit}}"/>
+						<Label text="{i18n>productWeightLabel}"/>
+						<Text text="{= ${WeightMeasure} + ' ' + ${WeightUnit}}"/>
+					</form:content>
+				</form:SimpleForm>	
+		</content>
+	</Panel>	
+	</VBox>
+	
+</mvc:View>

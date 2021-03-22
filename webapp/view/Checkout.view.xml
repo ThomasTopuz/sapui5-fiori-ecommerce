@@ -1,0 +1,114 @@
+<core:View controllerName="opensap.ecommerce.controller.Checkout" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:form="sap.ui.layout.form" id="checkout-view">
+	<Dialog title="Checkout" icon="sap-icon://activity-individual" id="checkoutDialog" contentWidth="96%" contentHeight="96%">
+		<content>
+			<NavContainer id="wizardNavContainer">
+				<pages>
+					<Page id="wizardContentPage" showHeader="false">
+						<content>
+							<Wizard id="ShoppingCartWizard" complete="completedHandler" enableBranching="true"
+								class="sapUiResponsivePadding--header sapUiResponsivePadding--content">
+								<WizardStep id="ContactStep" nextStep="PaymentTypeStep" activate="checkContactStep" title="Insert informations"
+									icon="sap-icon://shipping-status">
+									<form:SimpleForm id="SimpleFormChange353" editable="true" layout="ResponsiveGridLayout" title="Customer Details" labelSpanXL="3"
+										labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
+										columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+										<form:content>
+											<Label text="Name"/>
+											<Input valueLiveUpdate="true" required="true" liveChange="checkContactStep"
+												value="{ path: 'checkout>/customerInfo/name', type: 'sap.ui.model.type.String'}"/>
+											<Label text="Surname"/>
+											<Input valueLiveUpdate="true" required="true" liveChange="checkContactStep"
+												value="{ path: 'checkout>/customerInfo/surname', type: 'sap.ui.model.type.String'}"/>
+											<Label text="Email"/>
+											<Input valueLiveUpdate="true" required="true" liveChange="checkContactStep"
+												value="{ path:'checkout>/customerInfo/email', type: 'sap.ui.model.type.String'}"/>
+										</form:content>
+									</form:SimpleForm>
+									<form:SimpleForm id="SimpleFormChange354" editable="true" layout="ResponsiveGridLayout" title="Address" labelSpanXL="3" labelSpanL="3"
+										labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+										columnsL="1" columnsM="1" singleContainerFullSize="false">
+										<form:content>
+											<Label text="Street/No."/>
+											<Input required="true" liveChange="checkContactStep" valueLiveUpdate="true"
+												value="{ path: 'checkout>/address/primaryAddress', type: 'sap.ui.model.type.String'}"/>
+											<Input required="true" liveChange="checkContactStep" valueLiveUpdate="true"
+												value="{path:'checkout>/address/number',type:'sap.ui.model.type.String'}">
+												<layoutData>
+													<layout:GridData span="XL1 L2 M2 S4"/>
+												</layoutData>
+											</Input>
+											<Label text="ZIP Code/City"/>
+											<Input required="true" liveChange="checkContactStep" valueLiveUpdate="true"
+												value="{ path: 'checkout>/address/zipcode', type: 'sap.ui.model.type.String'}">
+												<layoutData>
+													<layout:GridData span="XL1 L2 M2 S4"/>
+												</layoutData>
+											</Input>
+											<Input required="true" liveChange="checkContactStep" valueLiveUpdate="true"
+												value="{ path: 'checkout>/address/city', type: 'sap.ui.model.type.String' }"/>
+											<Label text="Country"/>
+											<Input required="true" liveChange="checkContactStep" valueLiveUpdate="true"
+												value="{ path: 'checkout>/address/country', type: 'sap.ui.model.type.String'}"/>
+										</form:content>
+									</form:SimpleForm>
+								</WizardStep>
+								<WizardStep id="PaymentTypeStep" title="Payment type" subsequentSteps="CreditCardStep, CashOnDeliveryStep" complete="goToPaymentStep"
+									icon="sap-icon://money-bills">
+									<Text class="sapUiSmallMarginBottom"
+										text="We accept all major credit cards. No extra cost will be charged when paying with a credit card. Bank transfer and Cash on delivery are only possible for inland deliveries. A service charge of 2.99 EUR will be charged for these types of deliveries. Be aware, that for Bank transfers, the shipping will start on the day after the payment is received."/>
+									<HBox alignItems="Center" justifyContent="Center" width="100%">
+										<SegmentedButton selectionChange="setPaymentMethod" id="paymentMethodSelection" selectedKey="{checkout>/payment/paymentMethod}">
+											<items>
+												<SegmentedButtonItem key="Credit Card" icon="sap-icon://credit-card" text="Credit card"/>
+												<SegmentedButtonItem key="Cash on Delivery" icon="sap-icon://money-bills" text="Cash on delivery"/>
+											</items>
+										</SegmentedButton>
+									</HBox>
+								</WizardStep>
+								<WizardStep id="CreditCardStep" title="Credit card info" activate="checkCreditCardStep" complete="completeHandler"
+									icon="sap-icon://credit-card">
+									<form:SimpleForm id="creditCardForm" editable="true">
+										<Label text="Name on card" required="true"/>
+										<Input value="{ path: 'checkout>/payment/cardDetails/nameOnCard', type: 'sap.ui.model.type.String'}" liveChange="checkCreditCardStep"
+											valueLiveUpdate="true"/>
+										<Label text="Credit card number"/>
+										<MaskInput id="creditCardNumberMaskInput" required="true" value="{checkout>/payment/cardDetails/cardNumber}" mask="CCCC-CCCC-CCCC-CCCC"
+											placeholderSymbol="_">
+											<rules>
+												<MaskInputRule maskFormatSymbol="C" regex="[0-9]"/>
+											</rules>
+										</MaskInput>
+										<Label text="Expiration date dd/mm"/>
+										<MaskInput change="checkCreditCardStep" required="true" value="{checkout>/payment/cardDetails/expirationDate}" mask="CC/CC" placeholderSymbol="_">
+											<rules>
+												<MaskInputRule maskFormatSymbol="C" regex="[0-9]"/>
+											</rules>
+										</MaskInput>
+										<Label text="CVV"/>
+										<Input liveChange="checkCreditCardStep" valueLiveUpdate="true" required="true"
+											value="{path: 'checkout>/payment/cardDetails/cvv', type: 'sap.ui.model.type.String'}"/>
+									</form:SimpleForm>
+								</WizardStep>
+								<WizardStep id="CashOnDeliveryStep" complete="completeHandler" title="Cash on delivery info" activate="checkCashOnDeliveryStep"
+									icon="sap-icon://money-bills">
+									<form:SimpleForm editable="true">
+										<Label text="Phone number" required="true"/>
+										<Input valueLiveUpdate="true" liveChange="checkCashOnDeliveryStep" required="true"
+											value="{ path: 'checkout>/payment/cashondelivery/phone', type: 'sap.ui.model.type.String'}"/>
+									</form:SimpleForm>
+								</WizardStep>
+							</Wizard>
+						</content>
+						<footer>
+							<OverflowToolbar>
+								<ToolbarSpacer/>
+								<Button text="Cancel" press="handleWizardCancel"/>
+							</OverflowToolbar>
+						</footer>
+					</Page>
+				</pages>
+			</NavContainer>
+		</content>
+	</Dialog>
+</core:View>

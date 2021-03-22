@@ -1,0 +1,40 @@
+<mvc:View controllerName="opensap.ecommerce.controller.Master" xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc">
+	<semantic:SemanticPage id="masterPage" preserveHeaderStateOnScroll="true" toggleHeaderOnTitleClick="false">
+		<semantic:titleHeading>
+			<Title id="masterPageTitle" text="{masterView>/title}" level="H2"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+			<List id="list" width="auto" class="sapFDynamicPageAlignContent" items="{ path: '/ProductSet', parameters:{ 'expand':'ToSupplier' }}"
+				busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}"
+				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange">
+				<infoToolbar>
+					<Toolbar active="true" id="filterBar" visible="{masterView>/isFilterBarVisible}" press=".onOpenViewSettings">
+						<Title id="filterBarLabel" text="{masterView>/filterBarLabel}" level="H3"/>
+					</Toolbar>
+				</infoToolbar>
+				<headerToolbar>
+					<OverflowToolbar>
+						<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch" width="auto">
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="150px" maxWidth="240px" shrinkable="true" priority="NeverOverflow"/>
+							</layoutData>
+						</SearchField>
+						<ToggleButton icon="sap-icon://sort" text="group by category" enabled="true" pressed="false" press=".onToggleCategoryGrouping"/>
+						<ToolbarSpacer/>
+						<Button text="{cart>/iItemsCount}" icon="sap-icon://cart" press=".onOpenCartPopover"></Button>
+						
+					</OverflowToolbar>
+				</headerToolbar>
+				<items>
+					<ObjectListItem type="Navigation" press=".onSelectionChange" intro="{Category}" title="{Name}"
+						number="{ path: 'Price', formatter: '.formatter.currencyValue' }" numberUnit="{CurrencyCode}">
+						<ObjectAttribute text="{ToSupplier/CompanyName}"/>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>
